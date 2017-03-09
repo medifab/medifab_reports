@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="medifab_reports.custom_layout_header_invoice">
+			<div class="header">
+				<div>
+					<div style="height:35px"></div>
+					<div class="col-xs-5 list-inline" width="100%">
+						<img class="img-responsive" src="/medifab_reports/static/src/img/Medifab_logo.png"
+							width="100%" style="height:160px"></img>
+					</div>
+					<div class="col-xs-7">
+						<table width="100%">
+							<tr style="text-align:right;font-size:19px">
+								<td style="float:right !important;">
+									<b>
+										Tax Invoice
+										<t t-esc="doc.number"></t>
+									</b>
+								</td>
+							</tr>
+						</table>
+						<div style="border-bottom:1px solid grey;height:1px">
+						</div>
+						<div>
+							<div class="col-xs-6" style="height:50px;font-size:10px">
+								<b>
+									<span t-esc="user.partner_id.parent_id.name"></span>
+								</b>
+								<br />
+								<span t-esc="user.partner_id.parent_id.street"></span>
+								<span t-esc="user.partner_id.parent_id.street2"></span>
+								<br />
+								<span t-esc="user.partner_id.parent_id.city"></span>
+								<span t-esc="user.partner_id.parent_id.state_id.name"></span>
+								<span t-esc="user.partner_id.parent_id.zip"></span>
+								,
+								<span t-esc="user.partner_id.parent_id.country_id.name"></span>
+								<br />
+								Ph:
+								<span t-esc="user.partner_id.parent_id.phone"></span>
+								<br />
+								Fax:
+								<span t-esc="user.partner_id.parent_id.fax"></span>
+								<br />
+								Email:
+								<u>
+									<span t-esc="user.partner_id.email" style="color:blue"></span>
+								</u>
+							</div>
+							<div class="col-xs-6">
+								<table style="font-size:13px">
+									<tr>
+										<td>
+											<b>
+												ABN:
+											</b>
+										</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>
+											<b>
+												Date:
+											</b>
+										</td>
+										<td>
+											<t t-esc="doc.date_invoice"></t>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<b>
+												Account #:
+											</b>
+										</td>
+										<td>
+											<t t-esc="doc.origin"></t>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<b>
+												Order #:
+											</b>
+										</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>
+											<b>
+												Project Reference:
+											</b>
+										</td>
+										<td></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
+		<template id="medifab_reports.custom_layout_footer_invoice">
+			<div class="footer">
+				<div style="border:1px solid black;border-radius:1px;height:0px"></div>
+				<div style="padding-top:5px">
+					<div style="color:#000080;font-size:11px;line-height:10px">
+						<div class="col-xs-6" style="text-align:left"> Invoice.clf </div>
+						<div class="col-xs-6" style="text-align:right">
+							<ul class="list-inline">
+								Page <span class="page" /> of <span class="topage" />
+							</ul>
+						</div>
+					</div>
+					<div style="color:#000080;font-size:11px;line-height:10px">
+						<div class="col-xs-6" style="text-align:left"> MEDIFAB LIMITED </div>
+						<div class="col-xs-6" style="text-align:right">
+							<t t-esc="str(datetime.datetime.now()).split('.')[0]"></t>
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
+
+		<template id="medifab_reports.custom_layout_invoice">
+			<t t-call="medifab_reports.custom_layout_header_invoice" />
+			<t t-raw="0" />
+			<t t-call="medifab_reports.custom_layout_footer_invoice" />
+		</template>
+
+		<template id="medifab_reports.report_invoice_display">
+			<div>
+				<t t-call="medifab_reports.custom_layout_invoice">
+					<t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
+					<div class="page" style="font-family:'Verdana'">
+						<div class="oe_structure" />
+						<div>
+							<head>
+								<style> .address_box{
+									font-family:'Roboto,arial,sans-serif';
+									font-size:13px; height:133px; width:100%; color:black;
+									border:1px solid black;
+									border-radius:20px; padding-left:10px;
+									padding-top:2px; line-height:10px
+									}
+									.address_box td{
+									padding-top:5px;
+									}.table-invoice {
+									border-collapse: collapse;
+									width: 100%;
+									font-size: 11px;
+									}
+									.table-invoice th, .table-orders
+									td { text-align: left;
+									padding: 2px!important; }
+									.table-invoice
+									tr:nth-child(even){background-color: transparent}
+									.table-invoice
+									th { background-color: #000080; color: white;}
+									th:first-child {border-top-left-radius:2px;
+									border-bottom-left-radius:2px;}
+									th:last-child
+									{border-top-right-radius:2px; border-bottom-right-radius:2px;}
+									.table-invoice thead{
+									background-color: #000080;
+									}
+
+								</style>
+							</head>
+							<div
+								style="font-size:12px;margin-bottom:50px; width:100%; float:left; margin:auto; ">
+								<div class="col-xs-6">
+									<div style="padding-left:10px;font-family:Roboto,arial,sans-serif;">
+										<b> Invoice To : </b>
+									</div>
+									<div class="address_box">
+										<table>
+											<tbody>
+												<t t-if="doc.partner_id.name">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_id.name" />
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_id.street">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_id.street" />
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_id.street2">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_id.street2" />
+														</td>
+													</tr>
+												</t>
+
+												<t t-if="doc.partner_id.city">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_id.city" />
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_id.state_id.name">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_id.state_id.name" />
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_id.country_id.name">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_id.country_id.name" />
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_id.zip">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_id.zip" />
+														</td>
+													</tr>
+												</t>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="col-xs-6" style="margin-bottom:10px;">
+									<div style="padding-left:10px;font-family:Roboto,arial,sans-serif;">
+										<b> Deliver To : </b>
+									</div>
+									<div class="address_box">
+										<table>
+											<tbody>
+												<t t-if="doc.partner_shipping_id.name">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_shipping_id.name"></t>
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_shipping_id.street">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_shipping_id.street"></t>
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_shipping_id.street2">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_shipping_id.street2"></t>
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_shipping_id.city">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_shipping_id.city"></t>
+														</td>
+														<t t-if="doc.partner_shipping_id.zip">
+															<td>
+																<t t-esc="doc.partner_shipping_id.zip"></t>
+															</td>
+														</t>
+													</tr>
+												</t>
+												<t t-if="doc.partner_shipping_id.state_id.name">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_shipping_id.state_id.name"></t>
+														</td>
+													</tr>
+												</t>
+												<t t-if="doc.partner_shipping_id.country_id.name">
+													<tr>
+														<td>
+															<t t-esc="doc.partner_shipping_id.country_id.name"></t>
+														</td>
+													</tr>
+												</t>
+												<tr>
+													<td>
+														Client Name:
+													</td>
+													<td>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														Therapist/Contact:
+													</td>
+													<td>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div style="margin-top:20px;font-size:10px;min-height:622px;">
+								<table class="table-invoice">
+									<thead>
+										<tr>
+											<th> Stockcode </th>
+											<th> Description</th>
+											<th>Quantity</th>
+											<th>Unitprice</th>
+											<th>Discount</th>
+											<th>Linetotal</th>
+										</tr>
+									</thead>
+									<tbody>
+										<t t-foreach="doc.invoice_line_ids" t-as="line">
+											<tr>
+												<td>
+													<t t-esc="line.id"></t>
+												</td>
+												<td>
+													<t t-esc="line.name"></t>
+												</td>
+												<td>
+													<t t-esc="line.quantity"></t>
+												</td>
+												<td>
+													<t t-esc="line.price_unit"></t>
+												</td>
+												<td>
+													<t t-esc="line.discount"></t>
+												</td>
+												<td>
+													<t t-esc="line.price_subtotal"></t>
+												</td>
+											</tr>
+										</t>
+									</tbody>
+								</table>
+							</div>
+							<div class="total_table_bottom">
+								<div style="height:7px;border:0.08em solid black;border-radius:1px;">
+								</div>
+								<div class="row" name="total" style="padding-top:55px;font-size:11px;">
+									<div class="col-xs-6 pull-right">
+										<table class="table-end-total" width="100%">
+											<tr>
+												<td style="padding-right:3%;text-align:right;font-weight:bold"
+													width="44%">
+													SubTotal
+												</td>
+												<td width="40%"></td>
+												<td style="padding-right:3%;text-align:right" width="20%">
+													<span t-field="doc.amount_untaxed"
+														t-options='{"widget": "monetary", 
+								"display_currency": doc.currency_id}' />
+												</td>
+											</tr>
+											<tr>
+												<td style="padding-right:3%;text-align:right;font-weight:bold"
+													width="80%"> GST </td>
+												<td width="4%"></td>
+												<td style="padding-right:3%;text-align:right" width="20%">
+													<span t-field="doc.amount_tax"
+														t-options='{"widget": "monetary", 
+								"display_currency": doc.currency_id}' />
+												</td>
+											</tr>
+											<tr style="font-weight:bold">
+												<td style="padding-right:3%;text-align:right" width="80%">
+													Amount
+												</td>
+												<td width="4%"></td>
+												<td style="padding-right:3%;text-align:right" width="20%">
+													<span t-field="doc.amount_total"
+														t-options='{"widget": "monetary", "display_currency": 
+								doc.currency_id}' />
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<div style="padding:5px;font-size:10px;">
+									<i>
+										<b>Invoice is due for payment immediately.</b>
+										<br />
+										Invoiced value
+										is in AUD. Remit payment to NAB,BSB 083-004
+										Account No
+										59-568-2433.
+										<br />
+										<br />
+										<br />
+										Romalpa Clause : The goods shall remain the property of the
+										seller until the price has been discharged in full. A cheque
+										given by the
+										purchaser in payment shall not be treated as a
+										discharge until the same
+										has
+										been cleared. See
+										www.medifab.co.nz/finance/tos for more
+									</i>
+								</div>
+							</div>
+						</div>
+					</div>
+				</t>
+			</div>
+		</template>
+		<template id="medifab_reports.report_invoice1">
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="doc">
+					<t t-call="medifab_reports.report_invoice_display" t-lang="doc.partner_id.lang" />
+				</t>
+			</t>
+		</template>
+	</data>
+</odoo>

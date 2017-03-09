@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="medifab_reports.report_product_transactions_view">
+			<t t-call="report.html_container">
+				<t t-call="medifab_reports.custom_layout">
+					<div class="page" width="100%">
+						<div class="oe_structure" />
+						<div>
+							<table style="border-collapse:collapse;" width="100%"
+								border="1" class="table table-condensed">
+								<thead>
+									<tr>
+										<th width="15%">
+											Date
+										</th>
+										<th width="20%">
+											Type
+										</th>
+										<th width="15%">
+											Reference
+										</th>
+										<th width="15%">
+											Source
+										</th>
+										<th width="15%">
+											Quantity
+										</th>
+										<th width="15%">
+											Location
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<t t-foreach="doc.stock_id" t-as="stock">
+										<tr>
+											<td width="15%">
+												<span t-esc="stock.date.split(' ')[0]"></span>
+											</td>
+											<td>
+												<t t-if="stock.picking_type_id">
+													<span t-esc="stock.picking_type_id.name"></span>
+												</t>
+												<t t-if="not stock.picking_type_id">
+													Invertory Adjustment
+												</t>
+											</td>
+											<td>
+												<span t-esc="stock.picking_id.name"></span>
+											</td>
+											<td>
+												<span t-esc="stock.origin"></span>
+											</td>
+											<td>
+												+
+												<span t-esc="stock.product_uom_qty"></span>
+											</td>
+											<td>
+												<span t-esc="(stock.location_dest_id).name_get()[0][1]"></span>
+											</td>
+										</tr>
+										<tr>
+											<td width="15%">
+												<span t-esc="stock.date.split(' ')[0]"></span>
+											</td>
+											<td>
+												<t t-if="stock.picking_type_id">
+													<span t-esc="stock.picking_type_id.name"></span>
+												</t>
+												<t t-if="not stock.picking_type_id">
+													Invertory Adjustment
+												</t>
+											</td>
+											<td>
+												<span t-esc="stock.picking_id.name"></span>
+											</td>
+											<td>
+												<span t-esc="stock.origin"></span>
+											</td>
+											<td>
+												-
+												<span t-esc="stock.product_uom_qty"></span>
+											</td>
+											<td>
+												<span t-esc="(stock.location_id).name_get()[0][1]"></span>
+											</td>
+										</tr>
+									</t>
+								</tbody>
+							</table>
+						</div>
+						<!-- <head> <style> .table-condensed > tbody > tr { page-break-inside: 
+							avoid !important; } </style> </head> -->
+					</div>
+				</t>
+			</t>
+		</template>
+		<template id="medifab_reports.report_product_transactions">
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="doc">
+					<t t-call="medifab_reports.report_product_transactions_view"/>
+				</t>
+			</t>
+		</template>
+	</data>
+</odoo>

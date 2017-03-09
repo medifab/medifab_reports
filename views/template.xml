@@ -1,0 +1,33 @@
+<odoo>
+	<data>
+	<report 
+            id="report_product_inventory_transaction"
+            model="product.template"
+            string="Inventory Transactions"
+            report_type="qweb-pdf"
+            name="medifab_reports.report_product_transactions"
+            file="medifab_reports.report_product_transactions"
+            attachment_use="False"
+            paperformat="medifab_reports.paperformat_product_inventory_new"
+        />
+        <report 
+            id="sale.report_sale_order"
+            model="sale.order"
+            string="Quotation / Order"
+            report_type="qweb-pdf"
+            name="medifab_reports.report_sale_order_confirm"
+            file="medifab_reports.report_sale_order_confirm"
+            attachment_use="False"
+            paperformat="medifab_reports.paperformat_product_inventory_new"
+        />
+        <report 
+            id="account.account_invoices"
+            model="account.invoice"
+            string="Invoices"
+            report_type="qweb-pdf"
+            name="medifab_reports.report_invoice1"
+            file="medifab_reports.report_invoice1"
+            paperformat="medifab_reports.paperformat_account_invoice"
+        />
+	</data>
+</odoo>
